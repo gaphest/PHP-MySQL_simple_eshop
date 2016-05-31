@@ -1,0 +1,7 @@
+<?
+session_start(); //ÍÀ×ÈÍÀÅÌ ÑÅÑÑÈÞ
+if(!isset($_SESSION['admin'])){
+    //ÏÅÐÅÄÀÅÒ GET'îì ÏÀÐÀÌÅÒÐ ref = ÒÎÌÓ ÀÄÐÅÑÓ Ñ ÊÎÒÎÐÎÃÎ ÏÐÈØËÈ íà ýòó ñòðàíèöó
+    header("Location: /eshop/admin/secure/login.php?ref={$_SERVER['REQUEST_URI']}");
+    exit;
+}

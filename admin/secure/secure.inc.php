@@ -1,0 +1,45 @@
+<?
+//ÔÀÉË Â ÊÎÒÎÐÎÌ ÁÓÄÓÒ ÕÐÀÍÈÒÜÑß ËÎÃÈÍ:ÕÝØ ÏÀÐÎËß:CÎËÜ:ÊÎËÈ×ÅÑÒÂÎ ÈÒÅÐÀÖÈÉ
+define('FILE_NAME', '.htpasswd');
+
+//ÔÓÍÊÖÈß ÂÎÇÂÐÀÙÀÅÒ ÇÀÕÅØÈÐÎÂÀÍÍÓÞ n ðàç ÑÒÐÎÊÓ (ÑÎÑÒÎßÙÓÞ ÈÇ ÑÒÐÎÊÈ + ÑÎËÜ)
+function getHash($string, $salt, $iterationCount){
+    for($i=0; $i< $iterationCount; $i++)
+        $string= sha1($string . $salt);
+    return $string;
+}
+//ÔÓÍÊÖÈß ÇÀÏÈÑÛÂÀÅÒ ÑÒÐÎÊÓ Â êîòîðóþ âõîäèò user,ÕÝØ,ñîëü Â ÔÀÉË .htpasswd
+function saveHash($user, $hash, $salt, $iteration){
+    $str= "$user:$hash:$salt:$iteration\n";
+    if(file_put_contents(FILE_NAME, $str, FILE_APPEND))
+        return true;
+    else
+        return false;
+}
+
+
+//ÏÐÎÂÅÐßÅÒ ÑÒÐÎ×ÊÈ (âèäà $user:$hash:$salt:$iteration) Â ÔÀÉËÅ .htpasswd
+// åñòü ëè â íèõ ÷òîáû $user == $login, ÅÑËÈ ÍÀÕÎÄÈÒ ÒÀÊÓÞ ÑÒÐÎ×ÊÓ ÒÎ ÂÎÇÂÐÀÙÀÅÒ ÅÅ
+function userExists($login){
+    //ÅÑËÈ ÔÀÉËÀ .htpasswd ÍÅÒ òî âîçâðàùàåò false
+    if(!is_file(FILE_NAME))
+        return false;
+    //ÅÑËÈ ÅÑÒÜ ÇÀ×ÈÒÛÂÀÅÒ ÅÃÎ Â ÌÀÑÑÈÂ $users
+    $users=file(FILE_NAME);
+
+    foreach ($users as $user){
+        //ÄËß êàæäîãî ýëåìåíòà ìàññèâà users âèäà "$user:$hash:$salt:$iteration";
+        //ÅÑËÈ â $user:$hash:$salt:$iteration åñòü $login
+        //òî âîçâðàùàåò ýòîò $user:$hash:$salt:$iteration
+        if(strpos($user, $login)!==false)
+        return $user;
+    }
+    return false;
+}
+
+//ÓÍÈ×ÒÎÆÀÅÒ ÑÅÑÑÈÞ È ÏÅÐÅÍÀÏÐÀÂËßÅÒ â login.php
+function logOut(){
+    session_destroy();
+    header('Location: secure/login.php');
+    exit;
+}

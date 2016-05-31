@@ -1,0 +1,2 @@
+# .htaccess для админки магазина
+DirectoryIndex login.php
