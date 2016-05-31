@@ -1,0 +1,12 @@
+<?php
+	// ïîäêëþ÷åíèå áèáëèîòåê
+	require "inc/lib.inc.php";
+	require "inc/db.inc.php";
+
+//ÏÐÈÍÈÌÀÅÌ â $id (ÊÎÃÄÀ ÞÇÅÐ ÍÀÆÀË Â ÊÀÒÀËÎÃÅ "Â ÊÎÐÇÈÍÓ" ÃÅÒîì áûë ïåðåäàí id
+$id=ClearInt($_GET['id']);
+$quantity=1;
+add2Basket($id,$quantity);
+header('Location:catalog.php');
+exit;
+?>
