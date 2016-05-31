@@ -1,0 +1,2 @@
+# .htaccess для магазина
+DirectoryIndex catalog.php
